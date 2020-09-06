@@ -141,8 +141,7 @@
           date: this.today.day,
           temp: this.temp,
           windSpeed: this.dataWeather.wind.speed,
-          humidity: this.dataWeather.main.humidity,
-                     
+          humidity: this.dataWeather.main.humidity,                     
         }   
       },
       clearCity() {
@@ -155,8 +154,7 @@
       emitData() {
         this.saveDataWeather()
         this.$emit('save', this.dataForLocalStorage)
-      }
- 
+      } 
     },
     mounted() {      
       this.fetchApiWeather()      
