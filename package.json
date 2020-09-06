@@ -9,7 +9,8 @@
     "export": "nuxt export",
     "serve": "nuxt serve",
     "generate": "nuxt generate",
-    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "nuxt": "^2.13.0"
