@@ -1,8 +1,10 @@
 <template>
+<v-row>
   <v-card
     class="mx-auto mt-10 mb-10"
     width="360"
-    min-width="320"       
+    min-width="320"
+    height="500"       
     v-if="dataWeather"    
   >
   
@@ -66,8 +68,10 @@
                 </v-col>
 
                 <v-col cols="6 text-center">
-                  <v-btn class="info" @click="emitData">Save</v-btn>
-                </v-col>
+                  <v-btn class="info" @click="addSelectedCity">
+                    Add
+                  </v-btn>
+                </v-col>                              
               </v-row>              
             </v-form>
 
@@ -76,6 +80,46 @@
       </v-container>
     </v-card-actions>
   </v-card>
+
+  <v-card
+    class="mx-auto mt-10 mb-10"    
+    min-width="400"
+    max-height="500"
+    v-if="selectedCities.length"
+  >
+    <v-simple-table>
+      
+        <thead>
+          <tr>
+            <th class="text-left">City</th>
+            <th class="text-left">Temperature</th>            
+            <th class="text-left"></th>            
+            <th class="text-left"></th>            
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in selectedCities" :key="index">
+            <td>{{ item.city }}</td>
+            <td>{{ item.temp }}</td>
+            <td>
+              <v-col cols="6 text-center">
+                <v-btn class="info" @click="emitData(index)" x-small>
+                  Save
+                </v-btn>
+              </v-col>
+            </td>
+            <td>
+              <v-col cols="6 text-center">
+                <v-btn class="info" @click="deleteSelectedCity(index)" x-small>
+                  Del
+                </v-btn>
+              </v-col>
+            </td>
+          </tr>
+        </tbody>      
+    </v-simple-table>
+  </v-card>
+</v-row>  
 </template>
 
 <script>
@@ -86,7 +130,8 @@
         city: 'kiev',
         notFound: false,
         dataForLocalStorage: {},
-        keyForLocalStorage: 0
+        keyForLocalStorage: 0,
+        selectedCities: []
       }
     },
     computed: {
@@ -144,16 +189,24 @@
           humidity: this.dataWeather.main.humidity,                     
         }   
       },
+      addSelectedCity() {
+        let set = new Set(this.selectedCities)
+        set.add(this.dataForLocalStorage)
+        this.selectedCities = [...set]        
+      },
+      deleteSelectedCity(index) {        
+        this.selectedCities = this.selectedCities.filter((item, idx) => idx !== index)
+      },
       clearCity() {
         this.city = ''
       },
-      saveDataWeather() {        
-        const value = JSON.stringify(this.dataForLocalStorage)        
+      saveDataWeather(index) {        
+        const value = JSON.stringify(this.selectedCities[index])        
         localStorage.setItem(value, value)        
       },
-      emitData() {
-        this.saveDataWeather()
-        this.$emit('save', this.dataForLocalStorage)
+      emitData(index) {
+        this.saveDataWeather(index)
+        this.$emit('save', this.selectedCities[index])        
       } 
     },
     mounted() {      

@@ -23,7 +23,7 @@ export default {
       for (let i = 0; i < keys.length; i++) {
         let item = JSON.parse(keys[i])        
         this.dataFromLocalStorage.push(item)
-      }      
+      }           
     },  
 
     deleteItem(index) {
